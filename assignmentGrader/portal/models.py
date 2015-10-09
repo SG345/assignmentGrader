@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     profile_pic = models.ImageField(upload_to='profile_images', blank=True)
     StaffMember = models.BooleanField(default=False)
     userScore = models.BigIntegerField(default=0)
+    country = models.TextField()
 
     def __unicode__(self):
         return self.user.username
