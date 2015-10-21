@@ -7,7 +7,7 @@ class UserProfile(models.Model):
     profile_pic = models.ImageField(upload_to='profile_images', blank=True)
     StaffMember = models.BooleanField(default=False)
     userScore = models.BigIntegerField(default=0)
-    country = models.TextField()
+    #country = models.TextField()
 
     def __unicode__(self):
         return self.user.username
@@ -19,5 +19,5 @@ class Problems(models.Model):
     problem_title = models.CharField(max_length=28)
     test_cases = models.TextField()
     answer_file = models.TextField()
-    user = models.OneToManyField(User)
+    #user = models.OneToManyField(User)
 
