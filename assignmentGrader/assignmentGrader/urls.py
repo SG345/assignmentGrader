@@ -20,7 +20,14 @@ urlpatterns = patterns('',
       ('^$', 'portal.views.homepage'),
       ('^home/$', 'portal.views.homepage'),
       ('^portal/register/$','portal.views.register'), 
-      ('^portal/login/$', 'portal.views.user_login')
+      ('^portal/login/$', 'portal.views.user_login'),
+      ('^portal/login/landing$', 'portal.views.show_problems'),
+
+      ('^portal/logoutme/$', 'portal.views.logout_me'),
+
+      ('^portal/login/logoutme/$', 'portal.views.logout_me'),
+      ('^home/logoutme/$', 'portal.views.logout_me'),
+      ('^portal/an$', 'portal.views.show_an'),
 )
 
 #urlpatterns = [
