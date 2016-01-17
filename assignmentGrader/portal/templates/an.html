@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+{% extends 'base.html' %}
+{% block content %}
+<html>
+    <head>
+        <title> Home </title>
+    
+    {% for i in Q %}
+        
+        <p><b>{{i.an_title}} </b></p>
+        <p> {{i.an_des}} </p>
+        <p> {{i.an_time}} </p>
+        <hr width="100%"></hr>
+        {% endfor %}
+    {% endblock %}
+</html>
+

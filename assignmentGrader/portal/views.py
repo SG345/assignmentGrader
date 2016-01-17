@@ -2,11 +2,14 @@ from django.shortcuts import render
 from django import forms
 from portal import models
 from portal.forms import UserForm, UserProfileForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register(request):
+    navbar="navbar.html"
+
 
     regStatus = False
 
@@ -50,13 +53,27 @@ def user_login(request):
 
         if user:
             login(request, user)
-            return HttpResponseRedirect('/home/')
+            return HttpResponseRedirect('landing')
         else:
             return HttpResponse('Invalid login credentials')
 
     else:
         return render(request, 'login.html', {})
 
-@login_required
+
+def logout_me(request):
+    logout(request)
+    return HttpResponseRedirect('/home/')
+
 def homepage(request):
     return render(request, 'home.html', {})
+
+def show_problems(request):
+    from portal.models import Problems
+    F=Problems.objects.all()
+    return render(request, 'student_home.html', {'P': F})
+
+def show_an(request):
+    from portal.models import Announcements
+    G=Announcements.objects.all()
+    return render(request, 'an.html', {'Q': G})
