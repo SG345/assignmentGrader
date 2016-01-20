@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import include, url, patterns
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = patterns('',
       ('^$', 'portal.views.homepage'),
@@ -28,7 +30,18 @@ urlpatterns = patterns('',
       ('^portal/login/logoutme/$', 'portal.views.logout_me'),
       ('^home/logoutme/$', 'portal.views.logout_me'),
       ('^portal/an$', 'portal.views.show_an'),
+      ('^portal/staff_home$', 'portal.views.show_staff'),
+      ('^portal/add_prob$', 'portal.views.add_problem'),
+      ('^portal/add_problem$', 'portal.views.add_prob_form'),
+      ('^portal/psuccess/$', 'portal.views.psu'),
+      ('^portal/edit_problem/$', 'portal.views.edit_problem'),
+      ('^portal/editted_prob/$', 'portal.views.add_editted_prob'),
+     
 )
+if settings.DEBUG and settings.MEDIA_ROOT:
+    urlpatterns += static(settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT)
+
 
 #urlpatterns = [
 #    url(r'^admin/', include(admin.site.urls)),
