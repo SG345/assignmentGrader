@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+<a href="add_problem"><button type="button" class="btn btn-success">Add Problem &nbsp;<span class="glyphicon glyphicon-plus"></button>   </a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Problem ID</th>
+        <th>Problem title</th>
+	      <th>Action</th>
+  
+      </tr>
+      
+      
+       {% for i in P %}
+        <tr>
+        <td> {{i.problem_id}} </td>
+        <td> {{i.problem_title}} </td>
+        <form role="form" method="post" action="/portal/edit_problem/">
+        <input type="hidden" value="{{i.problem_id}}" name="pid">
+            
+        {% csrf_token %} 
+ <td>  <button type="submit" class="glyphicon glyphicon-pencil"></button></form>
+ &nbsp;&nbsp;
+ <a href="delete/{{ i.problem_id }}/" <button type="submit" class="glyphicon glyphicon-trash"></button> </a>
+</td>
+
+        </tr>
+        {% endfor %}
+
+        
+
+    </thead>
+  </table>
+  
+</div>
+{% endblock %}
+</html>

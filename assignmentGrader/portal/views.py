@@ -61,12 +61,72 @@ def user_login(request):
         return render(request, 'login.html', {})
 
 
+def add_problem(request):
+    from portal.models import Problems 
+    if request.method == 'POST':
+        pid = request.POST.get('pid')
+        pdes = request.POST.get('pdes')
+        ptitle = request.POST.get('ptitle')
+        ptest = request.POST.get('ptest')
+        psource = request.POST.get('psource')
+        eo = request.POST.get('eo')
+
+        a = Problems(problem_id=pid, problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
+        a.save()
+        F=Problems.objects.all()
+        #return render(request, 'student_home.html', {'P': F})
+        return HttpResponseRedirect('psuccess/')
+
+
+def edit_problem(request):
+    from portal.models import Problems 
+    if request.method == 'POST':
+        pid = request.POST.get('pid')
+
+        #a = Problems(problem_id=pid, problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
+        #a.save()
+        F=Problems.objects.all()
+        for w in F:
+            if w.problem_id == pid:
+                return render(request, 'edit_prob.html', {'E': w})
+
+def add_editted_prob(request):
+    from portal.models import Problems 
+    if request.method == 'POST':
+        pid = request.POST.get('pid')
+        pdes = request.POST.get('pdes')
+        ptitle = request.POST.get('ptitle')
+        ptest = request.POST.get('ptest')
+        psource = request.POST.get('psource')
+        eo = request.POST.get('eo')
+        
+        a = Problems.objects.get(problem_id=pid)
+        a.problem_title=ptitle
+        a.test_cases=ptest
+        a.answer_source=psource
+        a.expected_output=eo
+        a.problem_description=pdes
+        a.save()
+
+        return HttpResponseRedirect('/portal/staff_home')
+
+        #from portal.models import Problems
+        #G=Problems.objects.all()
+        #return render(request, 'staff_home.html', {'P': G})
+
+
+def psu(request):
+    return render(request, 'add_redirect.html', {})
+
 def logout_me(request):
     logout(request)
     return HttpResponseRedirect('/home/')
 
 def homepage(request):
     return render(request, 'home.html', {})
+
+def delete_prob(request):
+    delete_p=request.GET.get('id','')
 
 def show_problems(request):
     from portal.models import Problems
@@ -77,3 +137,12 @@ def show_an(request):
     from portal.models import Announcements
     G=Announcements.objects.all()
     return render(request, 'an.html', {'Q': G})
+
+def show_staff(request):
+    from portal.models import Problems
+    G=Problems.objects.all()
+    return render(request, 'staff_home.html', {'P': G})
+
+
+def add_prob_form(request):
+    return render(request, 'add_problem.html', {})

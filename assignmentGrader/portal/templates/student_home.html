@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-<h4>To do work</h4>       
+<h4>To do work</h4>   
   <table class="table">
     <thead>
       <tr>
@@ -18,13 +18,6 @@
         <td> {{i.problem_id}} </td>
         <td> {{i.problem_title}} </td>
         </tr>
-        {% endfor %}
-
-        {% for i in P %}
-        <B> Problem ID: </B> {{i.problem_id}}
-
-
-        <B> Problem Description: </B> {{i.problem_description}}
         {% endfor %}
 
     </thead>

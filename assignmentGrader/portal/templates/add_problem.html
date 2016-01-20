@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+{% extends 'base.html' %}
+{% block content %}
+
+
+<form class="form-inline" align="center" role="form" method="post" action="/portal/add_prob">
+	{% csrf_token %}
+  <div class="form-group">
+    <label for="id">Problem ID</label>
+    <input type="text" class="form-control" id="pid" name="pid">
+  </div><br>
+  <div class="form-group">
+    <label for="ptitle">Problem title</label>
+    <input type="text" class="form-control" id="ptitle" name="ptitle">
+  </div><br>
+  <div class="form-group">
+    <label for="pdes">Problem description</label>
+    <textarea class="form-control" rows="5" id="pdes" name="pdes"></textarea>
+  </div><br>
+  <div class="form-group">
+    <label for="ptest">Test cases</label>
+    <textarea class="form-control" rows="5" id="ptest" name="ptest"></textarea>
+  </div><br>
+  <div class="form-group">
+    <label for="psource">Source code</label>
+    <textarea class="form-control" rows="10" id="psource" name="psource"></textarea>
+  </div><br>
+  <div class="form-group">
+    <label for="eo">Expected Output</label>
+    <input type="text" class="form-control" id="eo" name="eo">
+  </div><br>
+  
+  <button type="submit" class="btn btn-default">Add</button>
+</form>
+
+{% endblock %}
