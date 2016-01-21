@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 def register(request):
     ans_code = "abc"
@@ -50,7 +51,7 @@ def register(request):
 
         regStatus = True
 
-    return render(request, 'home.html',{})
+    return render(request, 'home.html', {})
 def show_reg_form(request):
     return render(request, 'register.html', {})
 
@@ -64,6 +65,9 @@ def user_login(request):
 
         if user:
             login(request, user)
+            if user.is_staff==True:
+                return HttpResponseRedirect('/portal/staff_home')
+
             return HttpResponseRedirect('landing')
         else:
             return HttpResponse('Invalid login credentials')
@@ -75,14 +79,18 @@ def user_login(request):
 def add_problem(request):
     from portal.models import Problems 
     if request.method == 'POST':
-        pid = request.POST.get('pid')
         pdes = request.POST.get('pdes')
         ptitle = request.POST.get('ptitle')
         ptest = request.POST.get('ptest')
         psource = request.POST.get('psource')
         eo = request.POST.get('eo')
+        A = Problems.objects.all()
+        i = 1
+        for item in A:
+            i = i+1
 
-        a = Problems(problem_id=pid, problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
+
+        a = Problems(problem_id=i,problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
         a.save()
         F=Problems.objects.all()
         #return render(request, 'student_home.html', {'P': F})
@@ -100,6 +108,8 @@ def edit_problem(request):
         for w in F:
             if w.problem_id == pid:
                 return render(request, 'edit_prob.html', {'E': w})
+
+
 
 def add_editted_prob(request):
     from portal.models import Problems 
@@ -144,7 +154,38 @@ def show_problems(request):
 def show_an(request):
     from portal.models import Announcements
     G=Announcements.objects.all()
+
+    G.sort(reverse=True)
     return render(request, 'an.html', {'Q': G})
+
+def add_an(request):
+    from portal.models import Announcements
+    if request.method == 'POST':
+        an_title = request.POST.get('an_title')
+        an_des = request.POST.get('an_des')
+        
+        A = Announcements.objects.all()
+        i = 1
+        for item in A:
+            i = i+1
+
+
+        a = Announcements(an_id=i,an_des=an_des, an_title=an_title)
+        a.save()
+        #return render(request, 'student_home.html', {'P': F})
+        return HttpResponseRedirect('/portal/an_staff')
+
+def DeleteThisAn(request, an_id=0):
+    from portal.models import Announcements
+    a=Announcements.objects.get(an_id=an_id)
+    a.delete()
+    return HttpResponseRedirect('/portal/an_staff')
+
+def show_an_staff(request):
+    from portal.models import Announcements
+    G=Announcements.objects.all()
+    return render(request, 'an_staff.html', {'Q': G})
+
 
 def show_staff(request):
     from portal.models import Problems

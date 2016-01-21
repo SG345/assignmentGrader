@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+{% extends 'base.html' %}
+{% block content %}
+<html>
+    <head>
+        <title> Home </title>
+
+
+  <form class="form-inline" align="center" role="form" method="post" action="/portal/add_an/">
+	{% csrf_token %}
+  
+  <div class="form-group">
+    <label for="an_title">Announcement title</label>
+    <input type="text" class="form-control" id="an_title" name="an_title">
+  </div><br>
+  <div class="form-group">
+    <label for="an_des">Announcement description</label>
+    <textarea class="form-control" rows="4" id="an_des" name="an_des"></textarea>
+  </div><br><br>
+  
+  <button type="submit" class="btn btn-success">Add Announcement&nbsp;<span class="glyphicon glyphicon-plus"></button>
+</form>
+<hr width="100%"></hr>
+
+    {% for i in Q %}
+        
+        <p><b>{{i.an_title}} </b></p>
+        <p> {{i.an_des}} </p>
+        <p> {{i.an_time}} </p>
+        <p><a href="/portal/delete_an/{{i.an_id}}"><button type="button" class="btn btn-danger">Delete &nbsp;<span class="glyphicon glyphicon-trash"></button></a>
+        <hr width="100%"></hr>
+        {% endfor %}
+
+
+
+
+
+
+    {% endblock %}
+</html>

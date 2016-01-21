@@ -15,17 +15,6 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
-class Staff(models.Model):
-    staff_id=models.TextField(primary_key=True, default="0",editable=False)
-    #staff_first_name=models.TextField()
-    #staff_last_name=models.TextField()
-    #staff_username=models.TextField(max_length()=28)
-    ##staff_password=models.CharField(max_length()=50)
-    #staff_email=models.TextField()
-    #staff_problems=models.TextField()
-
-    def __unicode__(self):
-        return self.staff.id
 
 class Problems(models.Model):
 

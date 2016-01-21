@@ -34,13 +34,17 @@ urlpatterns = patterns('',
 
       ('logoutme/', 'portal.views.logout_me'),
       ('^portal/an$', 'portal.views.show_an'),
-      ('^portal/staff_home$', 'portal.views.show_staff'),
+       ('^portal/an_staff$', 'portal.views.show_an_staff'),
+      ('^portal/staff_home/$', 'portal.views.show_staff'),
       ('^portal/add_prob$', 'portal.views.add_problem'),
       ('^portal/add_problem$', 'portal.views.add_prob_form'),
+      ('^portal/add_an/$', 'portal.views.add_an'),
       ('^portal/psuccess/$', 'portal.views.psu'),
       ('^portal/edit_problem/$', 'portal.views.edit_problem'),
       ('^portal/editted_prob/$', 'portal.views.add_editted_prob'),
       (r'^portal/delete/(?P<pid>\d+)/$', 'portal.views.DeleteThisProb'),
+      (r'^portal/delete_an/(?P<an_id>\d+)/$', 'portal.views.DeleteThisAn'),
+
 
 )
 
