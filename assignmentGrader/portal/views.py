@@ -154,8 +154,6 @@ def show_problems(request):
 def show_an(request):
     from portal.models import Announcements
     G=Announcements.objects.all()
-
-    G.sort(reverse=True)
     return render(request, 'an.html', {'Q': G})
 
 def add_an(request):
@@ -183,7 +181,7 @@ def DeleteThisAn(request, an_id=0):
 
 def show_an_staff(request):
     from portal.models import Announcements
-    G=Announcements.objects.all()
+    G=Announcements.objects.order_by('-an_id')
     return render(request, 'an_staff.html', {'Q': G})
 
 
