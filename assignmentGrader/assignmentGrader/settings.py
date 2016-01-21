@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.static',
             ],
         },
     },
@@ -101,12 +102,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-                os.path.join(BASE_DIR,'staticfiles'), # if your static files folder is named "staticfiles"
-)
+    
 TEMPLATE_DIRS = (
                 os.path.join(BASE_DIR,'template'), # if your static files folder is named "template"
 )
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+)
+
+STATICFILES_FINDERS = ( 
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
 
 

@@ -22,13 +22,17 @@ urlpatterns = patterns('',
       ('^$', 'portal.views.homepage'),
       ('^home/$', 'portal.views.homepage'),
       ('^portal/register/$','portal.views.register'), 
+
+      ('^portal/registerme/$','portal.views.show_reg_form'), 
       ('^portal/login/$', 'portal.views.user_login'),
       ('^portal/login/landing$', 'portal.views.show_problems'),
-
+      ('^portal/registerme/portal/register/home', 'portal.views.homepage'),
       ('^portal/logoutme/$', 'portal.views.logout_me'),
 
       ('^portal/login/logoutme/$', 'portal.views.logout_me'),
-      ('^home/logoutme/$', 'portal.views.logout_me'),
+      ('^home/logoutme$', 'portal.views.logout_me'),
+
+      ('logoutme/', 'portal.views.logout_me'),
       ('^portal/an$', 'portal.views.show_an'),
       ('^portal/staff_home$', 'portal.views.show_staff'),
       ('^portal/add_prob$', 'portal.views.add_problem'),
@@ -36,11 +40,9 @@ urlpatterns = patterns('',
       ('^portal/psuccess/$', 'portal.views.psu'),
       ('^portal/edit_problem/$', 'portal.views.edit_problem'),
       ('^portal/editted_prob/$', 'portal.views.add_editted_prob'),
-     
+      (r'^portal/delete/(?P<pid>\d+)/$', 'portal.views.DeleteThisProb'),
+
 )
-if settings.DEBUG and settings.MEDIA_ROOT:
-    urlpatterns += static(settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT)
 
 
 #urlpatterns = [

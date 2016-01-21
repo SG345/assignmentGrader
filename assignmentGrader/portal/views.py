@@ -8,40 +8,51 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register(request):
-    navbar="navbar.html"
-
-
+    ans_code = "abc"
     regStatus = False
+    from django.contrib.auth.models import User
+
 
     if request.method == 'POST':
         #grab info from raw information
         user_form=UserForm(data=request.POST)
         profile_form=UserProfileForm(data=request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user=user_form.save()
+        #if user_form.is_valid() and profile_form.is_valid():
+            #user=user_form.save()
 
             #hash the password for security using the djangohash default method
-            user.set_password(user.password)
-            user.save()
+        username = request.POST.get('username')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        secret_code = request.POST.get('secret_code')
+        staffval = False
+        if secret_code == ans_code:
+            staffval = True
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
+            #user.set_password('user.password')
+        user = User(username=username, first_name=first_name, last_name=last_name, email=email, password=password)
 
-            if 'profile_pic' in request.FILES:
-                profile_pic = request.FILES['profile_pic']
-            profile.save()
+        user.save()
+        user.set_password(password)
+        if staffval == True:
+            user.is_staff=True
 
-            regStatus = True
+        user.save()
+            #profile = profile_form.save(commit=False)
+            #profile.user = user
 
-        else:
-            print user_form.errors, profile_form.errors
-    
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
-    
-    return render(request, 'register.html', {'user_form': user_form, 'profile_form': profile_form, 'registered': regStatus})
+            #if 'profile_pic' in request.FILES:
+             #   profile_pic = request.FILES['profile_pic']
+            #profile.save()
+
+        regStatus = True
+
+    return render(request, 'home.html',{})
+def show_reg_form(request):
+    return render(request, 'register.html', {})
 
 def user_login(request):
 
@@ -125,9 +136,6 @@ def logout_me(request):
 def homepage(request):
     return render(request, 'home.html', {})
 
-def delete_prob(request):
-    delete_p=request.GET.get('id','')
-
 def show_problems(request):
     from portal.models import Problems
     F=Problems.objects.all()
@@ -146,3 +154,9 @@ def show_staff(request):
 
 def add_prob_form(request):
     return render(request, 'add_problem.html', {})
+
+def DeleteThisProb(request, pid=0):
+    from portal.models import Problems
+    a=Problems.objects.get(problem_id=pid)
+    a.delete()
+    return HttpResponseRedirect('/portal/staff_home')
