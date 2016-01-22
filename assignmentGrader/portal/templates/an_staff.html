@@ -6,31 +6,32 @@
         <title> Home </title>
 
 
-  <form class="form-inline" align="center" role="form" method="post" action="/portal/add_an/">
+  <form role="form" method="post" action="/portal/add_an/">
 	{% csrf_token %}
   
-  <div class="form-group">
+  <div class="form-group col-lg-6">
+    
     <label for="an_title">Announcement title</label>
-    <input type="text" class="form-control" id="an_title" name="an_title">
-  </div><br>
-  <div class="form-group">
+    <input type="text" class="form-control" width="40%" id="an_title" name="an_title">
+  <br>
     <label for="an_des">Announcement description</label>
-    <textarea class="form-control" rows="4" id="an_des" name="an_des"></textarea>
-  </div><br><br>
-  
-  <button type="submit" class="btn btn-success">Add Announcement&nbsp;<span class="glyphicon glyphicon-plus"></button>
-</form>
-<hr width="100%"></hr>
+    <textarea class="form-control" width="40%" rows="4" id="an_des" name="an_des"></textarea>
+  <br><br>
+  <button type="submit" class="btn btn-success">Add Announcement<span class="glyphicon glyphicon-plus"></button>
 
+</form>
+<hr style="height:3px;background-color:#3366ff;"></hr>
+
+  
     {% for i in Q %}
         
         <p><b>{{i.an_title}} </b></p>
         <p> {{i.an_des}} </p>
         <p> {{i.an_time}} </p>
         <p><a href="/portal/delete_an/{{i.an_id}}"><button type="button" class="btn btn-danger">Delete &nbsp;<span class="glyphicon glyphicon-trash"></button></a>
-        <hr width="100%"></hr>
+        <hr style="height:1px;background-color:#3366ff;"></hr>
         {% endfor %}
-
+</div>
 
 
 
