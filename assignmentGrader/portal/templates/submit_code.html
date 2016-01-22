@@ -2,3 +2,25 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load staticfiles %}
+
+<p><b>{{ SRC.problem_title }} </b></p>
+<p><b>{{ SRC.problem_description }} </b></p>
+<form method="POST" action="/submit/{{ SRC.problem_id }}/">
+
+	{% csrf_token %}
+
+
+
+<div class="form-group">
+
+    <label><input type="radio" name="submit_lang" value="c">C</label>
+    <label><input type="radio" name="submit_lang" value="cpp" >C++</label>
+    <br><label for="submit_source">Submit source code</label>
+    <textarea class="form-control" rows="4" id="submit_source" name="submit_source"></textarea>
+</div><br>
+
+<button type="submit" class="btn btn-success">Submit&nbsp;</button>
+</form>
+
+
+{% endblock %}

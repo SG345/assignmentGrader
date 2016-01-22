@@ -7,12 +7,11 @@ from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+# auth
 def register(request):
     ans_code = "abc"
     regStatus = False
     from django.contrib.auth.models import User
-
 
     if request.method == 'POST':
         #grab info from raw information
@@ -52,6 +51,7 @@ def register(request):
         regStatus = True
 
     return render(request, 'home.html', {})
+
 def show_reg_form(request):
     return render(request, 'register.html', {})
 
@@ -75,81 +75,16 @@ def user_login(request):
     else:
         return render(request, 'login.html', {})
 
-
-def add_problem(request):
-    from portal.models import Problems 
-    if request.method == 'POST':
-        pdes = request.POST.get('pdes')
-        ptitle = request.POST.get('ptitle')
-        ptest = request.POST.get('ptest')
-        psource = request.POST.get('psource')
-        eo = request.POST.get('eo')
-        A = Problems.objects.all()
-        i = 1
-        for item in A:
-            i = i+1
-
-
-        a = Problems(problem_id=i,problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
-        a.save()
-        F=Problems.objects.all()
-        #return render(request, 'student_home.html', {'P': F})
-        return HttpResponseRedirect('psuccess/')
-
-
-def edit_problem(request):
-    from portal.models import Problems 
-    if request.method == 'POST':
-        pid = request.POST.get('pid')
-
-        #a = Problems(problem_id=pid, problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
-        #a.save()
-        F=Problems.objects.all()
-        for w in F:
-            if w.problem_id == pid:
-                return render(request, 'edit_prob.html', {'E': w})
-
-
-
-def add_editted_prob(request):
-    from portal.models import Problems 
-    if request.method == 'POST':
-        pid = request.POST.get('pid')
-        pdes = request.POST.get('pdes')
-        ptitle = request.POST.get('ptitle')
-        ptest = request.POST.get('ptest')
-        psource = request.POST.get('psource')
-        eo = request.POST.get('eo')
-        
-        a = Problems.objects.get(problem_id=pid)
-        a.problem_title=ptitle
-        a.test_cases=ptest
-        a.answer_source=psource
-        a.expected_output=eo
-        a.problem_description=pdes
-        a.save()
-
-        return HttpResponseRedirect('/portal/staff_home')
-
-        #from portal.models import Problems
-        #G=Problems.objects.all()
-        #return render(request, 'staff_home.html', {'P': G})
-
-
-def psu(request):
-    return render(request, 'add_redirect.html', {})
-
 def logout_me(request):
     logout(request)
     return HttpResponseRedirect('/home/')
 
 def homepage(request):
-    return render(request, 'home.html', {})
+    return render(request, 'home.html', {})  
 
-def show_problems(request):
-    from portal.models import Problems
-    F=Problems.objects.all()
-    return render(request, 'student_home.html', {'P': F})
+
+
+#announcement
 
 def show_an(request):
     from portal.models import Announcements
@@ -185,6 +120,75 @@ def show_an_staff(request):
     return render(request, 'an_staff.html', {'Q': G})
 
 
+
+
+#staff
+def add_problem(request):
+    from portal.models import Problems 
+    if request.method == 'POST':
+        pdes = request.POST.get('pdes')
+        ptitle = request.POST.get('ptitle')
+        ptest = request.POST.get('ptest')
+        psource = request.POST.get('psource')
+        eo = request.POST.get('eo')
+        A = Problems.objects.all()
+        i = 1
+        for item in A:
+            i = i+1
+
+
+        a = Problems(problem_id=i,problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
+        a.save()
+        F=Problems.objects.all()
+        #return render(request, 'student_home.html', {'P': F})
+        return HttpResponseRedirect('psuccess/')
+
+
+
+
+
+
+def add_editted_prob(request):
+    from portal.models import Problems 
+    if request.method == 'POST':
+        pid = request.POST.get('pid')
+        pdes = request.POST.get('pdes')
+        ptitle = request.POST.get('ptitle')
+        ptest = request.POST.get('ptest')
+        psource = request.POST.get('psource')
+        eo = request.POST.get('eo')
+        
+        a = Problems.objects.get(problem_id=pid)
+        a.problem_title=ptitle
+        a.test_cases=ptest
+        a.answer_source=psource
+        a.expected_output=eo
+        a.problem_description=pdes
+        a.save()
+
+        return HttpResponseRedirect('/portal/staff_home')
+
+        #from portal.models import Problems
+        #G=Problems.objects.all()
+        #return render(request, 'staff_home.html', {'P': G})
+
+
+def psu(request):
+    return render(request, 'add_redirect.html', {})
+
+def edit_problem(request):
+    from portal.models import Problems 
+    if request.method == 'POST':
+        pid = request.POST.get('pid')
+
+        #a = Problems(problem_id=pid, problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
+        #a.save()
+        F=Problems.objects.all()
+        for w in F:
+            if w.problem_id == pid:
+                return render(request, 'edit_prob.html', {'E': w})
+
+
 def show_staff(request):
     from portal.models import Problems
     G=Problems.objects.all()
@@ -199,3 +203,80 @@ def DeleteThisProb(request, pid=0):
     a=Problems.objects.get(problem_id=pid)
     a.delete()
     return HttpResponseRedirect('/portal/staff_home')
+
+
+
+
+
+
+
+
+
+#student
+
+def show_problems(request):
+    from portal.models import Problems
+    F=Problems.objects.all()
+    return render(request, 'student_home.html', {'P': F})
+
+def show_ind_problem(request,problem_id=0):
+    from portal.models import Problems
+    a=Problems.objects.get(problem_id=problem_id)
+    return render(request,'submit_code.html', {'SRC': a})
+
+def submit_status(request,problem_id=0):
+    if request.method == 'POST':
+        submit_source = request.POST.get('submit_source')
+        submit_lang = request.POST.get('submit_lang')
+    
+    from portal.models import Problems, Submissions
+    A = Submissions.objects.all()
+    i = 1
+    for item in A:
+        i = i+1
+
+    a = Submissions(submit_id=i,submit_pid=problem_id, submit_lang=submit_lang, submit_source=submit_source)
+    a.save()
+    
+    STATUS  = "EVALUATING"
+    OUTPUT =""
+
+    with open("temp.c", "w") as text_file:
+        text_file.write(submit_source)
+   
+    import subprocess
+    if submit_lang == "c":
+        if subprocess.call(["gcc", "temp.c"]) == 0:
+            subprocess.call(["./a.out <input.txt >output.txt"], shell=True)
+            STATUS = "COMPILED SUCCESSFULLY"
+            with open('output.txt', 'r') as myfile:
+                OUTPUT=myfile.read().replace('\n', '')
+
+        else: STATUS = "Compilation error"
+
+        # check whether the result is correct {}
+    if submit_lang == "cpp":
+        if subprocess.call(["g++", "test.cpp"]) == 0:
+            subprocess.call(["./a.out <input.txt >output.txt"], shell=True)
+            STATUS = "COMPILED SUCCESSFULLY"
+            with open('output.txt', 'r') as myfile:
+                OUTPUT=myfile.read().replace('\n', '')
+
+        else: STATUS = "Compilation error"
+
+    return render(request, 'verdict.html', {'SRC': a, 'STATUS': STATUS, 'OUTPUT': OUTPUT})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

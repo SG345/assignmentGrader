@@ -29,13 +29,21 @@ class Problems(models.Model):
     def __unicode__(self):
         return self.problem_id
 
-#class Submissions(models.Model):
- #   submit_author=models.ForeignKey('User')
-  #  submit_source=models.TextField()
-   # submit_output=models.TextField()
-    #submit_id=models.TextField()
-    #submit_pid=models.TextField()
-    #submit_time=models.DateTimeField()
+class Submissions(models.Model):
+    submit_id=models.TextField(primary_key=True)
+    submit_user=models.TextField()
+    submit_source=models.TextField()
+    submit_output=models.TextField()
+    submit_verdict=models.TextField()
+    submit_score=models.TextField()
+    submit_lang=models.TextField()
+    submit_pid=models.TextField()
+    submit_time=models.DateTimeField(auto_now_add=True)
+    
+    def __unicode__(self):
+        return self.submit_id
+
+
 class Announcements(models.Model):
     an_id=models.TextField(primary_key=True, default="0", editable=False)
     an_title=models.CharField(max_length=28)
