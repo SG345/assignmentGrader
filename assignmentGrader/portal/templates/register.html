@@ -7,7 +7,7 @@
         <title> Programming Assignment Grader </title>
     </head>
     <body>
-        <h1> Registration form </h1>
+        <h3>&nbsp;&nbsp;Registration form </h3>
 
         {% if registered %}
         <strong> Account has been registered successfully. Thanks! </strong>
@@ -16,36 +16,32 @@
 
 
 <body>
-<form class="form-inline" role="form" align="center" method="post" action="../register/">
+<form role="form" method="post" action="../register/">
 
 {% csrf_token %}
-    <div class="form-group">
-      <label for="username">Username &nbsp;&nbsp;&nbsp</label>
+    <div class="form-group col-lg-6">
+      <label for="username">Username </label>
       <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
-    </div><br><br>
-  <div class="form-group">
-      <label for="First name">First name &nbsp;&nbsp;&nbsp</label>
+      <br>
+    
+      <label for="First name">First name </label>
       <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name">
-    </div><br><br>
-  <div class="form-group">
-      <label for="Last name">Last name &nbsp;&nbsp;&nbsp;&nbsp</label>
+    <br>
+      <label for="Last name">Last name </label>
       <input type="text" class="form-control" id="fast_name" name="last_name" placeholder="Enter last name">
-    </div><br><br>
-  <div class="form-group">
+    <br>
       <label for="Email address">Email address  </label>
       <input type="text" class="form-control" id="Email" name="email" placeholder="Enter email address">
-    </div><br><br>
-    <div class="form-group">
-      <label for="pwd">Password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <br>
+      <label for="pwd">Password </label>
       <input type="password" class="form-control" id="pwd" name="password" placeholder="Enter password">
-    </div><br><br>
-    <div class="form-group">
-      <label for="pwd">Enter secret code for staff access (only for staff)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <br>
+      <label for="pwd">Enter secret code for staff access (only for staff)</label>
       <input type="password" class="form-control" id="pwd" name="secret_code" placeholder="Enter secret code for staff access">
-    </div><br><br>
-    
-    <button type="submit" class="btn btn-default">Register</button><br><br>
-  
+    <br>
+    <br>
+    <button type="submit" class="btn btn-primary">Register</button><br><br>
+  </div>
 
                   
 </form>

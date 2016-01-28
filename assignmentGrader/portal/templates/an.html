@@ -4,14 +4,15 @@
 <html>
     <head>
         <title> Home </title>
-    
+    <div class="form-group col-lg-6">
     {% for i in Q %}
         
         <p><b>{{i.an_title}} </b></p>
         <p> {{i.an_des}} </p>
         <p> {{i.an_time}} </p>
-        <hr width="100%"></hr>
+        <hr style="height:1px;background-color:#3366ff;"></hr>
         {% endfor %}
+    </div>
     {% endblock %}
 </html>
 
