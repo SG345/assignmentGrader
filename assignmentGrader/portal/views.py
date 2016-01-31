@@ -124,18 +124,18 @@ def add_problem(request):
         ptitle = request.POST.get('ptitle')
         ptest = request.POST.get('ptest')
         psource = request.POST.get('psource')
-        submit_lang = "c"
+        submit_lang = request.POST.get('submit_lang')
     
 
-        OUTPUT =""
+        OUTPUT ="Invalid output"
         STATUS=""
-        with open("temp.c", "w") as text_file:
-            text_file.write(psource)
         with open("test.txt", "w") as text_file:
             text_file.write(ptest)
    
         import subprocess
         if submit_lang == "c":
+            with open("temp.c", "w") as text_file:
+                text_file.write(psource)
             if subprocess.call(["gcc", "temp.c"]) == 0:
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
                 STATUS = "COMPILED SUCCESSFULLY"
@@ -146,6 +146,8 @@ def add_problem(request):
 
         # check whether the result is correct {}
         if submit_lang == "cpp":
+            with open("test.cpp", "w") as text_file:
+                text_file.write(psource)
             if subprocess.call(["g++", "test.cpp"]) == 0:
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
                 STATUS = "COMPILED SUCCESSFULLY"
@@ -184,15 +186,65 @@ def add_editted_prob(request):
         ptitle = request.POST.get('ptitle')
         ptest = request.POST.get('ptest')
         psource = request.POST.get('psource')
-        eo = request.POST.get('eo')
+        #eo = request.POST.get('eo')
+        submit_lang=request.POST.get('submit_lang')
+       
+
+        OUTPUT ="Invalid output"
+        STATUS=""
         
+
+        with open("test.txt", "w") as text_file:
+            text_file.write(ptest)
+   
+        import subprocess
+        if submit_lang == "c":
+            with open("temp.c", "w") as text_file:
+                text_file.write(psource)
+            if subprocess.call(["gcc", "temp.c"]) == 0:
+                subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
+                STATUS = "COMPILED SUCCESSFULLY"
+                with open('output.txt', 'r') as myfile:
+                    OUTPUT=myfile.read().replace('\n', '')
+
+            else: STATUS = "Compilation error"
+
+        # check whether the result is correct {}
+        elif submit_lang == "cpp":
+            with open("test.cpp", "w") as text_file:
+                text_file.write(psource)
+            if subprocess.call(["g++", "test.cpp"]) == 0:
+                subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
+                STATUS = "COMPILED SUCCESSFULLY"
+                with open('output.txt', 'r') as myfile:
+                    OUTPUT=myfile.read().replace('\n', '')
+
+            else: STATUS = "Compilation error"
+
+         
+
+        eo = ""
+        if STATUS == "Compilation Error":
+            eo = "CE"
+        else:
+            eo = OUTPUT
+        A = Problems.objects.all()
+      
         a = Problems.objects.get(problem_id=pid)
         a.problem_title=ptitle
         a.test_cases=ptest
         a.answer_source=psource
-        a.expected_output=eo
+        
+
+        a.expected_output=OUTPUT
         a.problem_description=pdes
         a.save()
+
+       # a = Problems(problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= OUTPU)
+       
+        #return render(request, 'student_home.html', {'P': F})
+
+
 
         return HttpResponseRedirect('/portal/staff_home')
 
@@ -211,12 +263,10 @@ def edit_problem(request):
 
         #a = Problems(problem_id=pid, problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
         #a.save()
-        F=Problems.objects.all()
-        for w in F:
-            if w.problem_id == pid:
-                return render(request, 'edit_prob.html', {'E': w})
+        F=Problems.objects.get(problem_id=pid)
+        return render(request, 'edit_prob.html', {'E': F})
 
-
+@login_required
 def show_staff(request):
     from portal.models import Problems
     G=Problems.objects.all()
@@ -253,31 +303,32 @@ def show_ind_problem(request,problem_id=0):
     return render(request,'submit_code.html', {'SRC': a})
 
 def submit_status(request,problem_id=0):
-        if request.method == 'POST':
-            submit_source = request.POST.get('submit_source')
-            submit_lang = request.POST.get('submit_lang')
-            submit_user = request.POST.get('submit_user')
+    if request.method == 'POST':
+        submit_source = request.POST.get('submit_source')
+        submit_lang = request.POST.get('submit_lang')
+        submit_user = request.POST.get('submit_user')
         
 
-        from portal.models import Problems, Submissions
+        from portal.models import Problems, Submissions, Restrictions, leaderBoard
 
 
 
         c=Problems.objects.get(problem_id=problem_id)
         ans=c.expected_output 
         title=c.problem_title
-    
-        A = Submissions.objects.all()
       
        
         STATUS  = "EVALUATING"
         OUTPUT =""
-
-        with open("temp.c", "w") as text_file:
-            text_file.write(submit_source)
+        f = open('output.txt', 'r+')
+        f.truncate()
+        f.close()
    
         import subprocess
         if submit_lang == "c":
+
+            with open("temp.c", "w") as text_file:
+                text_file.write(submit_source)
             if subprocess.call(["gcc", "temp.c"]) == 0:
                 subprocess.call(["./a.out <input.txt >output.txt"], shell=True)
                 STATUS = "COMPILED SUCCESSFULLY"
@@ -287,7 +338,9 @@ def submit_status(request,problem_id=0):
             else: STATUS = "Compilation error"
 
         # check whether the result is correct {}
-        if submit_lang == "cpp":
+        elif submit_lang == "cpp":
+            with open("test.cpp", "w") as text_file:
+                text_file.write(submit_source)
             if subprocess.call(["g++", "test.cpp"]) == 0:
                 subprocess.call(["./a.out <input.txt >output.txt"], shell=True)
                 STATUS = "COMPILED SUCCESSFULLY"
@@ -296,39 +349,80 @@ def submit_status(request,problem_id=0):
 
             else: STATUS = "Compilation error"
     
-        from portal.models import Problems,Restrictions
+        
         A=Restrictions.objects.all()
         permit="yes"
         found = "false"
+        cattempts=1
+        
         for item in A:
-            if A.user==submit_user and A.problemId==problem_id:
-                if A.attempt>3:
+            if item.userid==submit_user and item.problemId==problem_id:
+                if item.attempt>=3:
                     permit="no"
                 else:
-                    A.attempt=A.attempt+1
+                    cattempts=item.attempt
+                    item.attempt=item.attempt+1
+                    item.save()
+                    
                 found = "true"
         if found=="false":
-            b=Restrictions(user=submit_user,attempt="1",problemId=problem_id)
+            b=Restrictions(userid=submit_user,attempt="1",problemId=problem_id)
+            f=b
+            b.save()
         
-        
+
+        SCORE=0
+        STATU = "EVALUATING"
         with open("ans.txt", "w") as text_file:
             text_file.write(ans)
-        SAME=""
-        with open('output.txt', 'r') as file1:
-            with open('ans.txt', 'r') as file2:
-                same = set(file1).intersection(file2)
+        import filecmp
 
-        same.discard('\n')
+        if filecmp.cmp('ans.txt', 'output.txt') == True:
+            STATU="Correct answer"
+        else:
+            STATU="Wrong answer"
 
-        with open('some_output.txt', 'w') as file_out:
-            for line in same:
-                file_out.write(line)
+        B=Restrictions.objects.all()
 
-        a = Submissions(submit_pid=problem_id, submit_verdict=STATUS, submit_title=title, submit_user=submit_user, submit_lang=submit_lang, submit_source=submit_source)
-        a.save()
+        for item in B:
+            if item.userid==submit_user and item.problemId==problem_id and item.allow=="true" and STATU=="Correct answer":
+                    
+                SCORE=10
+                item.allow="false"
+                item.save()
+                S=leaderBoard(lb_user=submit_user)
+                e=S.lb_score
+                S.lb_score=e+SCORE
+                S.save()
+                
+
+                #d=User.objects.get(username=user.username)
+            
+                
+
+        #with open('output.txt', 'r') as file1:
+            #with open('ans.txt', 'r') as file2:
+               # same = set(file1).intersection(file2)
+
+        #same.discard('\n')
+        
+        #import os
+        #with open('some_output.txt', 'w') as file_out:
+            #for line in same:
+              #  file_out.write(line)
+        #if os.stat("some_output.txt").st_size == 0 :
+            #STATUS = "Wrong answer"
+        #else :
+            #"
+
+        MSG ="Sorry, you have exceeded your attempts."
+        if permit == "no":
     
-         
-        return render(request, 'verdict.html', {'SRC': a, 'VERDICT': STATUS, 'TITLE':title})
+            return render(request, 'verdict.html', {'VERDICT': MSG, 'TITLE':title})
+        else:
+            a = Submissions(submit_pid=problem_id, submit_verdict=STATU, submit_title=title, submit_user=submit_user, submit_lang=submit_lang, submit_source=submit_source)
+            a.save()
+            return render(request, 'verdict.html', {'SRC': a, 'VERDICT': STATU, 'TITLE':SCORE})
 
 @login_required
 def submission_history(request):
@@ -338,6 +432,7 @@ def submission_history(request):
     W = Submissions.objects.all()
 
     return render(request, 'submission.html', {'S':W})
+
 
 
 

@@ -18,7 +18,7 @@
     <label for="pdes">Problem description</label>
     <textarea class="form-control" rows="5" id="pdes" name="pdes" >{{E.problem_description}}</textarea>
   <br>
-  
+
     <label for="ptest">Test cases</label>
     <textarea class="form-control" rows="5" id="ptest" name="ptest" >{{E.test_cases}}</textarea>
   <br>
@@ -26,9 +26,11 @@
     <label for="psource">Source code</label>
     <textarea class="form-control" rows="10" id="psource" name="psource" >{{E.answer_source}}</textarea>
   <br>
-  
-    <label for="eo">Expected Output</label>
-    <input type="text" class="form-control" id="eo" name="eo" value="{{E.expected_output}}">
+  <label><input type="radio" name="submit_lang" value="c"> &nbsp;C &nbsp;</label>
+<label><input type="radio" name="submit_lang" value="cpp" >&nbsp;C++&nbsp;</label>
+<br>
+    <label for="eo">Expected Output</label><br>
+    {{E.expected_output}}
   <br>
   <br>
   

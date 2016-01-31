@@ -8,7 +8,7 @@ class UserProfile(models.Model):
 
     profile_pic = models.ImageField(upload_to='profile_images', blank=True)
 
-    student_score=models.TextField()
+    student_score=models.IntegerField(default=0)
     student_submissions=models.TextField()
     #country = models.TextField()
 
@@ -36,7 +36,7 @@ class Submissions(models.Model):
     submit_source=models.TextField()
     submit_output=models.TextField()
     submit_verdict=models.TextField()
-    submit_score=models.TextField()
+    submit_score=models.IntegerField(default=0)
     submit_lang=models.TextField()
     submit_pid=models.TextField()
     submit_time=models.DateTimeField(auto_now_add=True)
@@ -46,9 +46,14 @@ class Submissions(models.Model):
 
 class Restrictions(models.Model):
     r_id=models.AutoField(primary_key=True)
-    user=models.TextField()
+    userid=models.TextField()
     problemId=models.TextField()
-    attempt=models.TextField()
+    attempt=models.IntegerField()
+    allow=models.TextField(default="true")
+
+
+    def __unicode__(self):
+        return self.r_id
 
 
 class Announcements(models.Model):
@@ -60,5 +65,12 @@ class Announcements(models.Model):
     def __unicode__(self):
         return self.an_id
 
+
+class leaderBoard(models.Model):
+    lb_user=models.TextField(primary_key=True)
+    lb_score=models.IntegerField(default=0)
+    
+    def __unicode__(self):
+        return self.lb_score
 
     
