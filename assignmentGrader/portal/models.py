@@ -19,7 +19,7 @@ class UserProfile(models.Model):
 class Problems(models.Model):
 
     #problem_author=models.ForeignKey('Staff', on_delete=models.CASCADE)
-    problem_id=models.TextField(primary_key=True, default="0", editable=False)
+    problem_id=models.AutoField(primary_key=True)
     problem_description = models.TextField()
     problem_title = models.CharField(max_length=28)
     test_cases = models.TextField()
@@ -30,7 +30,8 @@ class Problems(models.Model):
         return self.problem_id
 
 class Submissions(models.Model):
-    submit_id=models.TextField(primary_key=True)
+    submit_id=models.AutoField(primary_key=True)
+    submit_title=models.TextField()
     submit_user=models.TextField()
     submit_source=models.TextField()
     submit_output=models.TextField()
@@ -43,9 +44,15 @@ class Submissions(models.Model):
     def __unicode__(self):
         return self.submit_id
 
+class Restrictions(models.Model):
+    r_id=models.AutoField(primary_key=True)
+    user=models.TextField()
+    problemId=models.TextField()
+    attempt=models.TextField()
+
 
 class Announcements(models.Model):
-    an_id=models.TextField(primary_key=True, default="0", editable=False)
+    an_id=models.AutoField(primary_key=True)
     an_title=models.CharField(max_length=28)
     an_des=models.TextField()
     an_time=models.DateTimeField(auto_now_add=True)

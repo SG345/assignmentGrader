@@ -49,7 +49,8 @@ urlpatterns = patterns('',
     #student
       (r'^problem/(?P<problem_id>\d+)/$', 'portal.views.show_ind_problem'),
       (r'^submit/(?P<problem_id>\d+)/$', 'portal.views.submit_status'),
-
+    #Submission
+      ('^portal/Submission/$', 'portal.views.submission_history'),
 
 )
 

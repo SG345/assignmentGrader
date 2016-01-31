@@ -1,8 +1,21 @@
 <!DOCTYPE HTML>
 {% extends 'base.html' %}
 {% block content %}
-
-<p>{{ SRC.submit_pid}} {{ SRC.submit_id}} {{ SRC.submit_source}} {{ SRC.submit_lang }} {{STATUS}}</p>
-<p> {{OUTPUT}} </p>
+<div class="form-group col-lg-5">
+<h3> This is your result for {{TITLE}}</h3> 
+<hr style="height:1px;background-color:#3366ff;"></hr>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="well">
+          <h4 class="text-primary"><span class="label label-primary pull-left">&nbsp;&nbsp;{{SRC.submit_id}}&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp; {{VERDICT}} </h4>
+        </div>
+      </div>
+    </div><!--/row-->    
+  </div><!--/col-12-->
+</div><!--/row-->
+<hr style="height:1px;background-color:#3366ff;"></hr>
+</div>
 
 {% endblock %}

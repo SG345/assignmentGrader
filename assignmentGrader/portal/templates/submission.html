@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_staff %}
+<div class="container"> 
+  <table class="table">
+    <thead>
+      <tr>
+
+        <th>Username</th>
+        <th>Problem ID</th>
+        <th>Submission ID</th>
+        <th>Problem Title</th>
+        <th>Status</th>
+        <th>Submission Time</th>
+	     </tr>
+      
+      
+       {% for i in S %}
+        <tr>
+          <td> {{i.submit_user}}</td>
+        <td> <a href="/problem/{{ i.submit_pid }}">{{i.submit_pid}}</a></td>
+        <td> {{i.submit_id}}</td>
+        <td> <a href="/problem/{{ i.submit_pid }}">{{i.submit_title}}</a></td>
+        <td> {{i.submit_verdict}}</td>
+        <td> {{i.submit_time}}</td>
+        </tr>
+        {% endfor %}
+
+    </thead>
+  </table>
+  
+</div>
+
+{% else %}
+
+<div class="container"> 
+  <table class="table">
+    <thead>
+      <tr>
+
+        <th>Problem ID</th>
+        <th>Submission ID</th>
+        <th>Problem Title</th>
+        <th>Status</th>
+        <th>Submission Time</th>
+       </tr>
+      
+      
+       {% for i in S %}
+       {% if i.submit_user == user.username %}
+        <tr>
+        <td> <a href="/problem/{{ i.submit_pid }}">{{i.submit_pid}}</a></td>
+        <td> {{i.submit_id}}</td>
+        <td> <a href="/problem/{{ i.submit_pid }}">{{i.submit_title}}</a></td>
+        <td> {{i.submit_verdict}}</td>
+        <td> {{i.submit_time}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+
+    </thead>
+  </table>
+  
+</div>
+
+{% endif %}
+{% endblock %}
+</html>
