@@ -5,14 +5,29 @@
 
 <form role="form" method="post" action="/portal/add_prob">
 	{% csrf_token %}
-  
+      {{ form.media }}
+
 <div class="form-group col-lg-4">
 <label for="ptitle">Problem title</label>
+
 <input type="text" class="form-control" id="ptitle" name="ptitle">
+<br>
+<label for="pdes">Problem Description</label>
+{% load wysiwyg %}
+{% wysiwyg_setup %}
+
+<textarea name="pdes" id="pdes"></textarea>
+
+{% wysiwyg_editor "pdes" %}
+
+<!--
 <br>
 <label for="pdes">Problem description</label>
  <textarea class="form-control" rows="5" id="pdes" name="pdes"></textarea>
  <br>
+-->
+<br>
+
 <label for="ptest">Test cases</label>
 <textarea class="form-control" rows="5" id="ptest" name="ptest"></textarea>
 <br>

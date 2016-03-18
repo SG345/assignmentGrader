@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'portal',
+    'tinymce',
+    'django_wysiwyg',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,6 +118,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+DJANGO_WYSIWYG_FLAVOR = "tinymce"
 
 
 

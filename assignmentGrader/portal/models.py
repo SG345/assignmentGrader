@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from tinymce.models import HTMLField
+
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
@@ -20,7 +22,7 @@ class Problems(models.Model):
 
     #problem_author=models.ForeignKey('Staff', on_delete=models.CASCADE)
     problem_id=models.AutoField(primary_key=True)
-    problem_description = models.TextField()
+    problem_description = HTMLField()
     problem_title = models.CharField(max_length=28)
     test_cases = models.TextField()
     answer_source = models.TextField()

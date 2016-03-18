@@ -15,7 +15,7 @@
        {% for i in P %}
         <tr>
         <td> <a href="/problem/{{ i.problem_id }}">{{i.problem_id}}</a></td>
-        <td> {{i.problem_title}} </td>
+        <td> <a href="/problem/{{ i.problem_id }}">{{i.problem_title}} </td>
         </tr>
         {% endfor %}
 

@@ -6,7 +6,20 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+def do_cmp(f1, f2):
+    bufsize = 8*1024
+    fp1 = open(f1, 'rb')
+    fp2 = open(f2, 'rb')
+    while True:
+        b1 = fp1.read(bufsize)
+        b2 = fp2.read(bufsize)
+        if not is_same(b1, b2):
+            return False
+        if not b1:
+            return True
 
+def is_same(text1, text2):
+    return text1.replace("\n","") == text2.replace("\n","")
 # auth
 def register(request):
     ans_code = "abc"
@@ -307,7 +320,7 @@ def submit_status(request,problem_id=0):
         submit_source = request.POST.get('submit_source')
         submit_lang = request.POST.get('submit_lang')
         submit_user = request.POST.get('submit_user')
-        
+    
 
         from portal.models import Problems, Submissions, Restrictions, leaderBoard
 
@@ -316,7 +329,11 @@ def submit_status(request,problem_id=0):
         c=Problems.objects.get(problem_id=problem_id)
         ans=c.expected_output 
         title=c.problem_title
+        ptest = c.test_cases
       
+        with open("test.txt", "w") as text_file:
+            text_file.write(ptest)
+
        
         STATUS  = "EVALUATING"
         OUTPUT =""
@@ -330,21 +347,21 @@ def submit_status(request,problem_id=0):
             with open("temp.c", "w") as text_file:
                 text_file.write(submit_source)
             if subprocess.call(["gcc", "temp.c"]) == 0:
-                subprocess.call(["./a.out <input.txt >output.txt"], shell=True)
+                subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
                 STATUS = "COMPILED SUCCESSFULLY"
-                with open('output.txt', 'r') as myfile:
+                with open('output.txt', 'r+') as myfile:
                     OUTPUT=myfile.read().replace('\n', '')
 
             else: STATUS = "Compilation error"
 
         # check whether the result is correct {}
-        elif submit_lang == "cpp":
+        else:
             with open("test.cpp", "w") as text_file:
                 text_file.write(submit_source)
             if subprocess.call(["g++", "test.cpp"]) == 0:
-                subprocess.call(["./a.out <input.txt >output.txt"], shell=True)
+                subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
                 STATUS = "COMPILED SUCCESSFULLY"
-                with open('output.txt', 'r') as myfile:
+                with open('output.txt', 'r+') as myfile:
                     OUTPUT=myfile.read().replace('\n', '')
 
             else: STATUS = "Compilation error"
@@ -377,10 +394,15 @@ def submit_status(request,problem_id=0):
             text_file.write(ans)
         import filecmp
 
-        if filecmp.cmp('ans.txt', 'output.txt') == True:
-            STATU="Correct answer"
+       # if filecmp.cmp('ans.txt', 'output.txt') == True:
+        #    STATU="Correct answer"
+        #else:
+        #    STATU="Wrong answer"
+
+        if do_cmp('ans.txt', 'output.txt') == True:
+            STATU = "Correct answer"
         else:
-            STATU="Wrong answer"
+            STATU = "Wrong answer"
 
         B=Restrictions.objects.all()
 
@@ -414,15 +436,16 @@ def submit_status(request,problem_id=0):
             #STATUS = "Wrong answer"
         #else :
             #"
-
+ 
         MSG ="Sorry, you have exceeded your attempts."
         if permit == "no":
+            #STATU -> OUTPUT
     
-            return render(request, 'verdict.html', {'VERDICT': MSG, 'TITLE':title})
+            return render(request, 'verdict.html', {'VERDICT': MSG, 'TITLE':title, 'SCORE': SCORE})
         else:
             a = Submissions(submit_pid=problem_id, submit_verdict=STATU, submit_title=title, submit_user=submit_user, submit_lang=submit_lang, submit_source=submit_source)
             a.save()
-            return render(request, 'verdict.html', {'SRC': a, 'VERDICT': STATU, 'TITLE':SCORE})
+            return render(request, 'verdict.html', {'SRC': a, 'VERDICT': STATU, 'TITLE':title, 'SCORE': SCORE})
 
 @login_required
 def submission_history(request):
@@ -434,8 +457,15 @@ def submission_history(request):
     return render(request, 'submission.html', {'S':W})
 
 
+def rankBoard(request):
+    from portal.models import leaderBoard
 
+    LB = leaderBoard.objects.all()
 
+    LB=leaderBoard.objects.order_by('-lb_score')
+
+    return render(request, 'rank.html', {'S':LB})
+        
 
 
 

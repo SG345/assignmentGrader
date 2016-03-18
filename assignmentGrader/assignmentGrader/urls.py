@@ -49,8 +49,12 @@ urlpatterns = patterns('',
     #student
       (r'^problem/(?P<problem_id>\d+)/$', 'portal.views.show_ind_problem'),
       (r'^submit/(?P<problem_id>\d+)/$', 'portal.views.submit_status'),
+      ('^portal/rank/$', 'portal.views.rankBoard'),
     #Submission
       ('^portal/Submission/$', 'portal.views.submission_history'),
+
+      (r'^tinymce/', include('tinymce.urls')),
+
 
 )
 

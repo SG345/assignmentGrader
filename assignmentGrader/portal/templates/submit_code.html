@@ -15,7 +15,14 @@
       <div class="col-lg-12">
         <div class="well">
           <h4 class="text-primary">{{SRC.problem_title}}</h4><br>
-          <h4>{{SRC.problem_description}}</h4>
+
+          <h4>
+
+{% autoescape off %}
+    {{ SRC.problem_description }}
+{% endautoescape %}
+
+           </h4>
     <label><input type="radio" name="submit_lang" value="c">&nbsp;C&nbsp;&nbsp;</label>
     <label><input type="radio" name="submit_lang" value="cpp" >&nbsp;C++&nbsp;&nbsp;</label>
     <br><label for="submit_source">Submit source code</label>
