@@ -10,13 +10,13 @@
 <div class="form-group col-lg-4">
 <label for="ptitle">Problem title</label>
 
-<input type="text" class="form-control" id="ptitle" name="ptitle">
+<input type="text" class="form-control" id="ptitle" name="ptitle" required>
 <br>
 <label for="pdes">Problem Description</label>
 {% load wysiwyg %}
 {% wysiwyg_setup %}
 
-<textarea name="pdes" id="pdes"></textarea>
+<textarea name="pdes" id="pdes" ></textarea>
 
 {% wysiwyg_editor "pdes" %}
 
@@ -29,13 +29,13 @@
 <br>
 
 <label for="ptest">Test cases</label>
-<textarea class="form-control" rows="5" id="ptest" name="ptest"></textarea>
+<textarea class="form-control" rows="5" id="ptest" name="ptest" required></textarea>
 <br>
  <label for="psource">Source code</label>
-<textarea class="form-control" rows="10" id="psource" name="psource"></textarea>
+<textarea class="form-control" rows="10" id="psource" name="psource" required></textarea>
 <br>
-<label><input type="radio" name="submit_lang" value="c"> &nbsp;C &nbsp;</label>
-<label><input type="radio" name="submit_lang" value="cpp" >&nbsp;C++&nbsp;</label>
+<label><input type="radio" name="submit_lang" value="c" required> &nbsp;C &nbsp;</label>
+<label><input type="radio" name="submit_lang" value="cpp" required>&nbsp;C++&nbsp;</label>
 <br><br>
 <button type="submit" class="btn btn-success">Add Problem &nbsp;<span class="glyphicon glyphicon-plus"></button>
 </div>

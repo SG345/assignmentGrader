@@ -21,23 +21,23 @@
 {% csrf_token %}
     <div class="form-group col-lg-6">
       <label for="username">Username </label>
-      <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+      <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
       <br>
     
       <label for="First name">First name </label>
-      <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name">
+      <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name" required>
     <br>
       <label for="Last name">Last name </label>
-      <input type="text" class="form-control" id="fast_name" name="last_name" placeholder="Enter last name">
+      <input type="text" class="form-control" id="fast_name" name="last_name" placeholder="Enter last name" required>
     <br>
       <label for="Email address">Email address  </label>
-      <input type="text" class="form-control" id="Email" name="email" placeholder="Enter email address">
+      <input type="email" class="form-control" id="Email" name="email" placeholder="Enter email address" required>
     <br>
       <label for="pwd">Password </label>
-      <input type="password" class="form-control" id="pwd" name="password" placeholder="Enter password">
+      <input type="password" class="form-control" id="pwd" name="password" placeholder="Enter password" required>
     <br>
       <label for="pwd">Enter secret code for staff access (only for staff)</label>
-      <input type="password" class="form-control" id="pwd" name="secret_code" placeholder="Enter secret code for staff access">
+      <input type="password" class="form-control" id="pwd" name="secret_code" placeholder="Enter secret code for staff access" >
     <br>
     <br>
     <button type="submit" class="btn btn-primary">Register</button><br><br>

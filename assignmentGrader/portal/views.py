@@ -83,7 +83,9 @@ def user_login(request):
 
             return HttpResponseRedirect('landing')
         else:
-            return HttpResponse('Invalid login credentials')
+            fail = "Invalid login credentials. Please try again or contact admin for help."
+            return render(request, 'home.html', {"err": fail})
+            #return HttpResponse('Invalid login credentials')
 
     else:
         return render(request, 'login.html', {})

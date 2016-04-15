@@ -23,10 +23,10 @@
 {% endautoescape %}
 
            </h4>
-    <label><input type="radio" name="submit_lang" value="c">&nbsp;C&nbsp;&nbsp;</label>
-    <label><input type="radio" name="submit_lang" value="cpp" >&nbsp;C++&nbsp;&nbsp;</label>
+    <label><input type="radio" name="submit_lang" value="c" required >&nbsp;C&nbsp;&nbsp;</label>
+    <label><input type="radio" name="submit_lang" value="cpp" required >&nbsp;C++&nbsp;&nbsp;</label>
     <br><label for="submit_source">Submit source code</label>
-    <textarea class="form-control" rows="20" id="submit_source" name="submit_source"></textarea>
+    <textarea class="form-control" rows="20" id="submit_source" name="submit_source" required></textarea>
     <input type="hidden" name="submit_user" value="{{user.username}}">
     <br>
     <br>
