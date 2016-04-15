@@ -332,11 +332,11 @@ def submit_status(request,problem_id=0):
         ans=c.expected_output 
         title=c.problem_title
         ptest = c.test_cases
-      
+        
         with open("test.txt", "w") as text_file:
             text_file.write(ptest)
-
-       
+        import datetime
+        TIME_START = datetime.datetime.now()
         STATUS  = "EVALUATING"
         OUTPUT =""
         f = open('output.txt', 'r+')
@@ -405,6 +405,11 @@ def submit_status(request,problem_id=0):
             STATU = "Correct answer"
         else:
             STATU = "Wrong answer"
+        TIME_END = datetime.datetime.now()
+
+        TOTAL_TIME = TIME_END - TIME_START
+        if (TOTAL_TIME.total_seconds > c.expected_timelimit):
+            STATU = "Wrong answer"
 
         B=Restrictions.objects.all()
 
@@ -438,14 +443,14 @@ def submit_status(request,problem_id=0):
             #STATUS = "Wrong answer"
         #else :
             #"
- 
+        
         MSG ="Sorry, you have exceeded your attempts."
         if permit == "no":
             #STATU -> OUTPUT
     
             return render(request, 'verdict.html', {'VERDICT': MSG, 'TITLE':title, 'SCORE': SCORE})
         else:
-            a = Submissions(submit_pid=problem_id, submit_verdict=STATU, submit_title=title, submit_user=submit_user, submit_lang=submit_lang, submit_source=submit_source)
+            a = Submissions(submit_pid=problem_id, submit_verdict=STATU, submit_title=title, submit_user=submit_user, submit_lang=submit_lang, submit_source=submit_source, submit_etime=TOTAL_TIME.total_seconds())
             a.save()
             return render(request, 'verdict.html', {'SRC': a, 'VERDICT': STATU, 'TITLE':title, 'SCORE': SCORE})
 
@@ -471,10 +476,28 @@ def rankBoard(request):
 
 
 
+@login_required
+def view_source(request, submit_id=0):
+    from portal.models import Submissions
+
+    a=Submissions.objects.get(submit_id=submit_id)
+    return render(request, 'view_source.html', {"i": a.submit_source})
+
+@login_required
+def view_mysource(request, submit_id=0):
+    from portal.models import Submissions
+    from django.contrib.auth.models import User
+
+    a=Submissions.objects.get(submit_id=submit_id)
+    return render(request, 'view_mysource.html', {"i": a.submit_source, "name": a.submit_user})
 
 
 
-
-
+@login_required
+def DeleteThisSub(request, submit_id=0):
+    from portal.models import Submissions
+    a=Announcements.objects.get(submit_id=submit_id)
+    a.delete()
+    return HttpResponseRedirect('/portal/Submission/')
 
 

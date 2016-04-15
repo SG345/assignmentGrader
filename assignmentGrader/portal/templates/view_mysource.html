@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+{% extends 'base.html' %}
+{% block content %}
+{% if name == user.username %}
+
+
+<div class="container"> 
+	 
+
+	 <pre>{{i}}</pre>
+
+  
+</div>
+{% else %}
+
+<p> Please login to access this page. If you are already logged in and you're seeing this message, it means you are trying to access someone else's source code which is not allowed. </p>
+
+{% endif %}
+{% endblock %}
+</html>

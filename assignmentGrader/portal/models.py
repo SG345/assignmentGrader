@@ -27,6 +27,7 @@ class Problems(models.Model):
     test_cases = models.TextField()
     answer_source = models.TextField()
     expected_output=models.TextField()
+    expected_timelimit=models.TextField(default=5)
 
     def __unicode__(self):
         return self.problem_id
@@ -42,7 +43,8 @@ class Submissions(models.Model):
     submit_lang=models.TextField()
     submit_pid=models.TextField()
     submit_time=models.DateTimeField(auto_now_add=True)
-    
+    submit_etime=models.TextField(default=0)
+
     def __unicode__(self):
         return self.submit_id
 
@@ -74,5 +76,12 @@ class leaderBoard(models.Model):
     
     def __unicode__(self):
         return self.lb_score
+
+class AdminAccess(models.Model):
+    admin_id=models.AutoField(primary_key=True)
+    staff_code = models.TextField()
+    
+    def __unicode__(self):
+        return self.admin_id
 
     

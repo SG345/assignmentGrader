@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_staff %}
+
+
+<div class="container"> 
+	 
+
+	 <pre>{{i}}</pre>
+
+  
+</div>
+{% else %}
+
+<p> Only staff can view source code submissions </p>
+
+{% endif %}
+{% endblock %}
+</html>

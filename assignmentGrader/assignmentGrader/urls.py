@@ -53,6 +53,10 @@ urlpatterns = patterns('',
     #Submission
       ('^portal/Submission/$', 'portal.views.submission_history'),
 
+      (r'^viewsource/(?P<submit_id>\d+)/$', 'portal.views.view_source'),
+
+      (r'^view_mysource/(?P<submit_id>\d+)/$', 'portal.views.view_mysource'),
+
       (r'^tinymce/', include('tinymce.urls')),
 
 
