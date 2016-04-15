@@ -388,7 +388,7 @@ def submit_status(request,problem_id=0):
             with open("test.cpp", "w") as text_file:
                 text_file.write(submit_source)
             if subprocess.call(["g++", "test.cpp"]) == 0:
-                TIME_START = datettime.datetime.now()
+                TIME_START = datetime.datetime.now()
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
                 TIME_END = datetime.datetime.now()
                 STATUS = "COMPILED SUCCESSFULLY"
@@ -442,7 +442,7 @@ def submit_status(request,problem_id=0):
             STATU = "Wrong answer"
         B=Restrictions.objects.all()
         for item in B:
-            if item.userid==submit_user and item.problemId==problem_id and item.attempt=="true" and STATU=="Correct answer":
+            if item.userid==submit_user and STATU=="Correct answer":
                     
                 SCORE=10
                 item.allow="false"
@@ -495,7 +495,9 @@ def submission_history(request):
 
 
 def rankBoard(request):
-    from portal.models import leaderBoard
+
+    from portal.models import leaderBoard, Submissions, Problems
+
 
     LB = leaderBoard.objects.all()
 

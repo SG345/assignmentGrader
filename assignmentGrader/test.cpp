@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 void quickSort( int[], int, int);
@@ -55,4 +56,3 @@ int partition( int a[], int l, int r) {
    t = a[l]; a[l] = a[j]; a[j] = t;
    return j;
 }
-
