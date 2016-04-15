@@ -80,7 +80,7 @@ class leaderBoard(models.Model):
 class AdminAccess(models.Model):
     admin_id=models.AutoField(primary_key=True)
     staff_code = models.TextField()
-    
+    max_attempts = models.IntegerField(default=3)
     def __unicode__(self):
         return self.admin_id
 
