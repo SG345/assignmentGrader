@@ -5,6 +5,7 @@ from portal.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, HttpResponse
+
 from django.contrib.auth.decorators import login_required
 def do_cmp(f1, f2):
     bufsize = 8*1024
@@ -140,13 +141,20 @@ def add_problem(request):
         ptest = request.POST.get('ptest')
         psource = request.POST.get('psource')
         submit_lang = request.POST.get('submit_lang')
+        expected_timelimit = request.POST.get('expected_timelimit')
     
 
         OUTPUT ="Invalid output"
         STATUS=""
         with open("test.txt", "w") as text_file:
             text_file.write(ptest)
-   
+        
+
+        import datetime
+
+        TIME_START = datetime.datetime.now()
+
+
         import subprocess
         if submit_lang == "c":
             with open("temp.c", "w") as text_file:
@@ -178,11 +186,14 @@ def add_problem(request):
             eo = "CE"
         else:
             eo = OUTPUT
+
+        TIME_END = datetime.datetime.now()
         A = Problems.objects.all()
       
+        TOTAL_TIME = TIME_END - TIME_START
+        
 
-
-        a = Problems(problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
+        a = Problems(problem_description=pdes, current_etime = TOTAL_TIME.total_seconds(), expected_timelimit=expected_timelimit, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= eo)
         a.save()
         F=Problems.objects.all()
         #return render(request, 'student_home.html', {'P': F})
@@ -196,12 +207,15 @@ def add_problem(request):
 def add_editted_prob(request):
     from portal.models import Problems 
     if request.method == 'POST':
+        import datetime
         pid = request.POST.get('pid')
         pdes = request.POST.get('pdes')
         ptitle = request.POST.get('ptitle')
         ptest = request.POST.get('ptest')
         psource = request.POST.get('psource')
         #eo = request.POST.get('eo')
+
+        expected_timelimit = request.POST.get('expected_timelimit')
         submit_lang=request.POST.get('submit_lang')
        
 
@@ -211,7 +225,7 @@ def add_editted_prob(request):
 
         with open("test.txt", "w") as text_file:
             text_file.write(ptest)
-   
+        TIME_START = datetime.datetime.now()
         import subprocess
         if submit_lang == "c":
             with open("temp.c", "w") as text_file:
@@ -243,6 +257,8 @@ def add_editted_prob(request):
             eo = "CE"
         else:
             eo = OUTPUT
+        TIME_END = datetime.datetime.now()
+        TOTAL_TIME = TIME_END - TIME_START
         A = Problems.objects.all()
       
         a = Problems.objects.get(problem_id=pid)
@@ -253,6 +269,8 @@ def add_editted_prob(request):
 
         a.expected_output=OUTPUT
         a.problem_description=pdes
+        a.current_etime = TOTAL_TIME.total_seconds()
+        a.expected_timelimit=expected_timelimit
         a.save()
 
        # a = Problems(problem_description=pdes, problem_title=ptitle, test_cases=ptest, answer_source=psource, expected_output= OUTPU)

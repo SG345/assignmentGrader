@@ -28,6 +28,7 @@ class Problems(models.Model):
     answer_source = models.TextField()
     expected_output=models.TextField()
     expected_timelimit=models.TextField(default=5)
+    current_etime=models.TextField(default=5)
 
     def __unicode__(self):
         return self.problem_id

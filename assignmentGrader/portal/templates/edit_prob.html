@@ -34,12 +34,26 @@
   
     <label for="psource">Source code</label>
     <textarea class="form-control" rows="10" id="psource" name="psource"required >{{E.answer_source}}</textarea>
+
+<br>
+ <label for="expected_timelimit">Expected Time Limit (in seconds)</label>
+<textarea class="form-control" rows="1" id="expected_timelimit" name="expected_timelimit" required>{{E.expected_timelimit}}</textarea>
+<br>
   <br>
   <label><input type="radio" name="submit_lang" value="c" required > &nbsp;C &nbsp;</label>
 <label><input type="radio" name="submit_lang" value="cpp" required >&nbsp;C++&nbsp;</label>
 <br>
     <label for="eo">Expected Output</label><br>
     {{E.expected_output}}
+  <br>
+  <br>
+    <label for="eo">Execution Time for the current source</label><br>
+    {{E.current_etime}}
+  <br>
+
+  <br>
+    <label for="eo">Time Limit for this problem (in seconds)</label><br>
+    {{E.expected_timelimit}}
   <br>
   <br>
   
