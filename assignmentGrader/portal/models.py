@@ -27,7 +27,7 @@ class Problems(models.Model):
     test_cases = models.TextField()
     answer_source = models.TextField()
     expected_output=models.TextField()
-    expected_timelimit=models.TextField(default=5)
+    expected_timelimit=models.FloatField(default=5)
     current_etime=models.TextField(default=5)
 
     def __unicode__(self):
@@ -84,5 +84,6 @@ class AdminAccess(models.Model):
     max_attempts = models.IntegerField(default=3)
     def __unicode__(self):
         return self.admin_id
+
 
     

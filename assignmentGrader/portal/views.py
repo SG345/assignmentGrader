@@ -152,7 +152,6 @@ def add_problem(request):
 
         import datetime
 
-        TIME_START = datetime.datetime.now()
 
 
         import subprocess
@@ -160,7 +159,10 @@ def add_problem(request):
             with open("temp.c", "w") as text_file:
                 text_file.write(psource)
             if subprocess.call(["gcc", "temp.c"]) == 0:
+
+                TIME_START = datetime.datetime.now()
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
+                TIME_END = datetime.datetime.now()
                 STATUS = "COMPILED SUCCESSFULLY"
                 with open('output.txt', 'r') as myfile:
                     OUTPUT=myfile.read().replace('\n', '')
@@ -172,7 +174,9 @@ def add_problem(request):
             with open("test.cpp", "w") as text_file:
                 text_file.write(psource)
             if subprocess.call(["g++", "test.cpp"]) == 0:
+                TIME_START = datetime.datetime.now()
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
+                TIME_END = datetime.datetime.now()
                 STATUS = "COMPILED SUCCESSFULLY"
                 with open('output.txt', 'r') as myfile:
                     OUTPUT=myfile.read().replace('\n', '')
@@ -187,7 +191,6 @@ def add_problem(request):
         else:
             eo = OUTPUT
 
-        TIME_END = datetime.datetime.now()
         A = Problems.objects.all()
       
         TOTAL_TIME = TIME_END - TIME_START
@@ -225,13 +228,16 @@ def add_editted_prob(request):
 
         with open("test.txt", "w") as text_file:
             text_file.write(ptest)
-        TIME_START = datetime.datetime.now()
+        
         import subprocess
         if submit_lang == "c":
             with open("temp.c", "w") as text_file:
                 text_file.write(psource)
             if subprocess.call(["gcc", "temp.c"]) == 0:
+                TIME_START = datetime.datetime.now()
+
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
+                TIME_END = datetime.datetime.now()
                 STATUS = "COMPILED SUCCESSFULLY"
                 with open('output.txt', 'r') as myfile:
                     OUTPUT=myfile.read().replace('\n', '')
@@ -243,7 +249,9 @@ def add_editted_prob(request):
             with open("test.cpp", "w") as text_file:
                 text_file.write(psource)
             if subprocess.call(["g++", "test.cpp"]) == 0:
+                TIME_START = datetime.datetime.now()
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
+                TIME_END = datetime.datetime.now()
                 STATUS = "COMPILED SUCCESSFULLY"
                 with open('output.txt', 'r') as myfile:
                     OUTPUT=myfile.read().replace('\n', '')
@@ -257,7 +265,6 @@ def add_editted_prob(request):
             eo = "CE"
         else:
             eo = OUTPUT
-        TIME_END = datetime.datetime.now()
         TOTAL_TIME = TIME_END - TIME_START
         A = Problems.objects.all()
       
@@ -354,20 +361,22 @@ def submit_status(request,problem_id=0):
         with open("test.txt", "w") as text_file:
             text_file.write(ptest)
         import datetime
-        TIME_START = datetime.datetime.now()
         STATUS  = "EVALUATING"
         OUTPUT =""
         f = open('output.txt', 'r+')
         f.truncate()
         f.close()
-   
+        TIME_START = datetime.datetime.now()
+        TIME_END = datetime.datetime.now()
         import subprocess
         if submit_lang == "c":
 
             with open("temp.c", "w") as text_file:
                 text_file.write(submit_source)
             if subprocess.call(["gcc", "temp.c"]) == 0:
+                TIME_START = datetime.datetime.now()
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
+                TIME_END = datetime.datetime.now()
                 STATUS = "COMPILED SUCCESSFULLY"
                 with open('output.txt', 'r+') as myfile:
                     OUTPUT=myfile.read().replace('\n', '')
@@ -379,7 +388,9 @@ def submit_status(request,problem_id=0):
             with open("test.cpp", "w") as text_file:
                 text_file.write(submit_source)
             if subprocess.call(["g++", "test.cpp"]) == 0:
+                TIME_START = datettime.datetime.now()
                 subprocess.call(["./a.out <test.txt >output.txt"], shell=True)
+                TIME_END = datetime.datetime.now()
                 STATUS = "COMPILED SUCCESSFULLY"
                 with open('output.txt', 'r+') as myfile:
                     OUTPUT=myfile.read().replace('\n', '')
@@ -423,16 +434,15 @@ def submit_status(request,problem_id=0):
             STATU = "Correct answer"
         else:
             STATU = "Wrong answer"
-        TIME_END = datetime.datetime.now()
 
         TOTAL_TIME = TIME_END - TIME_START
-        if (TOTAL_TIME.total_seconds > c.expected_timelimit):
+        F = TOTAL_TIME.total_seconds() - c.expected_timelimit
+
+        if F > c.expected_timelimit:
             STATU = "Wrong answer"
-
         B=Restrictions.objects.all()
-
         for item in B:
-            if item.userid==submit_user and item.problemId==problem_id and item.allow=="true" and STATU=="Correct answer":
+            if item.userid==submit_user and item.problemId==problem_id and item.attempt=="true" and STATU=="Correct answer":
                     
                 SCORE=10
                 item.allow="false"
@@ -443,7 +453,8 @@ def submit_status(request,problem_id=0):
                 S.save()
                 
 
-                #d=User.objects.get(username=user.username)
+                
+        #d=User.objects.get(username=user.username)
             
                 
 
@@ -462,8 +473,9 @@ def submit_status(request,problem_id=0):
         #else :
             #"
         
-        MSG ="Sorry, you have exceeded your attempts."
+        
         if permit == "no":
+            MSG ="Sorry, you have exceeded your attempts."
             #STATU -> OUTPUT
     
             return render(request, 'verdict.html', {'VERDICT': MSG, 'TITLE':title, 'SCORE': SCORE})
