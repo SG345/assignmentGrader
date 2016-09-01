@@ -7,8 +7,8 @@ Evaluating programming assignments is a time-consuming process. With **assignmen
 
 ## Installation
 
-Download the source code, start the server with the command "python manage.py runserver". 
-Dependencies that need to be installed preferbly through "python pip" - django-wysiwyg, django-tinymce.
+Download all the files, start the server with the command "python manage.py runserver". 
+Dependencies that need to be installed preferbly through "python pip" - django-wysiwyg, tinymce.
 
 
 
