@@ -12,5 +12,3 @@ Dependencies that need to be installed preferbly through "python pip" - django-w
 
 
 
-
-
