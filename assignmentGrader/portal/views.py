@@ -202,11 +202,6 @@ def add_problem(request):
         #return render(request, 'student_home.html', {'P': F})
         return HttpResponseRedirect('psuccess/')
 
-
-
-
-
-
 def add_editted_prob(request):
     from portal.models import Problems 
     if request.method == 'POST':
