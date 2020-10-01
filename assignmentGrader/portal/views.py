@@ -425,10 +425,6 @@ def submit_status(request,problem_id=0):
             text_file.write(ans)
         import filecmp
 
-       # if filecmp.cmp('ans.txt', 'output.txt') == True:
-        #    STATU="Correct answer"
-        #else:
-        #    STATU="Wrong answer"
 
         if do_cmp('ans.txt', 'output.txt') == True:
             STATU = "Correct answer"
