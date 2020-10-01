@@ -84,6 +84,3 @@ class AdminAccess(models.Model):
     max_attempts = models.IntegerField(default=3)
     def __unicode__(self):
         return self.admin_id
-
-
-    
